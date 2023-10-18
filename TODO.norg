@@ -20,7 +20,5 @@ version: 1.1.1
   - (x) Implement floating
   - (x) Neorg task template
   - (x) Implement templating using mock data
-  - (-) Implement async rest
-  - ( ) clickup task renderer
-    - ( )
-
+  - (x) Implement async rest - get
+  - (x) clickup task renderer
