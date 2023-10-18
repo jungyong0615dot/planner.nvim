@@ -10,7 +10,7 @@ M.get = function(url_info, auth, callback)
 		},
 		callback = vim.schedule_wrap(function(out)
 			local parsed = callback(out)
-      floating.task(parsed.title, parsed.description, "subtasks")
+      floating.task(parsed.title, parsed.description, parsed.subtasks)
 
 		end),
 	})

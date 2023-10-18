@@ -21,7 +21,7 @@ version: 1.1.1
    - (x) Implement templating using mock data
    - (x) Implement async rest - get
    - (x) clickup task renderer
-   - ( ) fetch and parse subtasks
+   - (x) fetch and parse subtasks
    - ( ) parse fields and write into metadata
 
 ** When edit buffer, automatically update into app
