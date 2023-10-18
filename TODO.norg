@@ -26,7 +26,8 @@ version: 1.1.1
 
 ** When edit buffer, automatically update into app
    - ( ) create augroup for text edit
-      - ( ) on text edit and input mode leave
+     - ( ) on text edit, append to stack
+     - ( ) when focus lost or 1min update, update app from stack
    - ( ) tree-sitter parse and get what changed
    - ( ) update app using REST API
 
