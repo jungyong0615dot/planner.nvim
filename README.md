@@ -1,5 +1,9 @@
 ## Todo list framework
 
+0. Goal
+- theres no all-in-one apps for planner.
+- build personalized planner, while borrowing multiple platforms' pros
+
 1. Create neovim plugin for todolist app
 - Unified plugin for all kinds of apps
   - clickup, jira, microsoft todo, todoist
@@ -87,7 +91,7 @@ COMMENT_TEXT
     - good to have:
       - api, plugins
 
-- [ ] plugin repo construct
+- [x] plugin repo construct
   - buf
     - floating.lua
     - autocmd/
@@ -98,9 +102,12 @@ COMMENT_TEXT
   - tl (telescope)
   - utils
   > each dir includes init.lua
-- [ ] try out neorg, orgmode treesitter 
-- [ ] async rest
-- [ ] floating
-- [ ] clickup task render
+
+- [x] try out neorg treesitter 
+- [x] Implement floating
+- [x] Neorg task template
+- [x] Implement templating using mock data
+- [-] Implement async rest
+- [ ] clickup task renderer
   - [ ]
 
