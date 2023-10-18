@@ -8,17 +8,33 @@ updated: 2023-10-18T14:20:45+0900
 version: 1.1.1
 @end
 
-
 * Create neovim plugin for todolist app
 ** Read specified task and render in neovim buffer
-  - (x) requirements
-  - (x) nvim buffer template
-  - (x) REST API requirements
-  - (x) neovim template requirements
-  - (x) plugin repo construct
-  - (x) try out neorg treesitter 
-  - (x) Implement floating
-  - (x) Neorg task template
-  - (x) Implement templating using mock data
-  - (x) Implement async rest - get
-  - (x) clickup task renderer
+   - (x) requirements
+   - (x) nvim buffer template
+   - (x) REST API requirements
+   - (x) neovim template requirements
+   - (x) plugin repo construct
+   - (x) try out neorg treesitter 
+   - (x) Implement floating
+   - (x) Neorg task template
+   - (x) Implement templating using mock data
+   - (x) Implement async rest - get
+   - (x) clickup task renderer
+   - ( ) fetch and parse subtasks
+   - ( ) parse fields and write into metadata
+
+** When edit buffer, automatically update into app
+   - ( ) create augroup for text edit
+      - ( ) on text edit and input mode leave
+   - ( ) tree-sitter parse and get what changed
+   - ( ) update app using REST API
+
+** Get updates from app periodically
+   - ( ) fetch updates from app, only for focused buffer
+      - ( ) scheduler: every 1min
+   - ( ) update buffer
+   - ( ) conflict handling
+
+** List tasks from section
+
