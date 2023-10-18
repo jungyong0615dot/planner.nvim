@@ -1,6 +1,5 @@
 local M = {}
 local utils = require("planner.utils")
-local Path = require("plenary.path")
 
 M.open = function(text)
 	local width = vim.api.nvim_get_option("columns")
