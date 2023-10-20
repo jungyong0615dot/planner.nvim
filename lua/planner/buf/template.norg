@@ -1,0 +1,20 @@
+@document.meta
+title: jinzhongjia/LspUI
+authors: Jungyong-lee
+categories: 
+created: 1693355855483
+updated: 1696318641517
+version: 
+@end
+
+___
+* DESCRIPTION 
+- hi
+- hello
+  
+___
+* SUBTASKS
+  ~ ( ) (A) Review the documentation of LspUI.nvim
+  ~~ task_id, PRIORITY
+  ~ ( ) (A) Identify key features of LspUI.nvim that can contribute to the Neovim UI
+  ~~ task_id, PRIORITY

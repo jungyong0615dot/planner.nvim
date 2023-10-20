@@ -22,20 +22,41 @@ version: 1.1.1
    - (x) Implement async rest - get
    - (x) clickup task renderer
    - (x) fetch and parse subtasks
-   - ( ) parse fields and write into metadata
+   - (x) parse fields and write into metadata
 
 ** When edit buffer, automatically update into app
-   - ( ) create augroup for text edit
-     - ( ) on text edit, append to stack
-     - ( ) when focus lost or 1min update, update app from stack
-   - ( ) tree-sitter parse and get what changed
-   - ( ) update app using REST API
+- ( ) on normal mode text edit - status change:
+-- (x) get current node in treesitter
+-- (x) fetch changed status
+-- (x) modify template for getting subtask id
+-- (x) fetch subtask id from child node
+-- (x) streamline modules
+-- (x) update app
 
-** Get updates from app periodically
-   - ( ) fetch updates from app, only for focused buffer
-      - ( ) scheduler: every 1min
-   - ( ) update buffer
-   - ( ) conflict handling
+- ( ) on insert mode text edit:
+-- ( ) if title changed, add to stack
+-- ( ) if description changed, add to stack
+-- ( ) if subtask title changed, add to stack
+
+- ( ) when focus lost, update app from stack
+- ( ) when focus gain and task changed, update buffer
+
+** Advanced autocmd
+- ( ) status change
+- ( ) if due date changed
+- ( ) if priority changed
 
 ** List tasks from section
 
+** TASK/SUBTASK CRUD
+- ( ) create subtask with title
+- ( ) delete subtask
+- ( ) create task with title
+- ( ) delete task
+
+** Advanced CRUD by detecting changes in buffer
+- ( ) if subtask id not exist, create subtask
+- ( ) if subtask line deleted, delete subtask
+
+** Visualize
+- ( ) priority color
