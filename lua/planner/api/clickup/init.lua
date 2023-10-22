@@ -123,6 +123,7 @@ M.get_task = function(task_id, api_key)
 				buffer = bufnr,
 				callback = function(ev)
 					local current_cursor_node = ts.get_node_at_cursor()
+          node_at_cursor:parent()
 					vim.print(ev)
 				end,
 			})
