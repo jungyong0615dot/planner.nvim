@@ -93,7 +93,7 @@ M.get_task = function(task_id, api_key)
 				buffer = bufnr,
 				callback = function(ev)
 					local current_cursor_node = ts.get_node_at_cursor()
-					if not ts.is_task_node(current_cursor_node) then
+					if not ts.is_task_status_node(current_cursor_node) then
 						return
 					end
 					local cursor_pos = vim.fn.getpos(".")
@@ -105,7 +105,7 @@ M.get_task = function(task_id, api_key)
 						cursor_pos[3],
 						{}
 					)[1]
-					local fields = ts.get_fields_at_cursor(current_cursor_node)
+					local fields = ts.get_fields_of_subtask(current_cursor_node)
 
 					M.update_task(
 						fields.task_id,
@@ -116,6 +116,14 @@ M.get_task = function(task_id, api_key)
 							vim.print("Transition done - New status: " .. new_status)
 						end
 					)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("InsertLeave", {
+				buffer = bufnr,
+				callback = function(ev)
+					local current_cursor_node = ts.get_node_at_cursor()
+					vim.print(ev)
 				end,
 			})
 		end),
