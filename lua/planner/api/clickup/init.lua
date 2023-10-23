@@ -14,7 +14,7 @@ local default_url = "https://api.clickup.com/api/v2"
 ---@return job
 M.update_task = function(task_id, api_key, fields, callback)
 	local url_info = utils.interpolate("{default_url}/task/{task_id}", { task_id = task_id, default_url = default_url })
-	curl.put(url_info, {
+	return curl.put(url_info, {
 		headers = {
 			Authorization = api_key,
 		},
@@ -35,7 +35,7 @@ local task_parser = function(out)
 	local author = output_task["creator"]["username"] or ""
 	local categories = ""
 	local created = output_task["date_created"] or ""
-	local updated = output_task["date_updated"] or ""
+	local date_updated = output_task["date_updated"] or ""
 
 	local subtask_line_template = [[~ ({status}) {subtask_title}]]
 	local subtask_fields_template = [[~~ {task_id}, {priority}]]
@@ -54,7 +54,7 @@ local task_parser = function(out)
 		subtasks = table.concat(subtasks_texts, "\n"),
 		author = author,
 		created = created,
-		updated = updated,
+		updated = date_updated,
 		version = "",
 		fields = "",
 		categories = categories,
@@ -70,7 +70,7 @@ M.get_task = function(task_id, api_key)
 		"{default_url}/task/{task_id}?include_subtasks=true",
 		{ task_id = task_id, default_url = default_url }
 	)
-	curl.get(url_info, {
+	return curl.get(url_info, {
 		headers = {
 			Authorization = api_key,
 		},
@@ -88,10 +88,11 @@ M.get_task = function(task_id, api_key)
 				parsed.version,
 				parsed.fields
 			)
+      vim.b[bufnr].task_id = task_id
 
 			vim.api.nvim_create_autocmd("TextChanged", {
 				buffer = bufnr,
-				callback = function(ev)
+				callback = function(_)
 					local current_cursor_node = ts.get_node_at_cursor()
 					if not ts.is_task_status_node(current_cursor_node) then
 						return
@@ -121,28 +122,28 @@ M.get_task = function(task_id, api_key)
 
 			vim.api.nvim_create_autocmd("InsertLeave", {
 				buffer = bufnr,
-				callback = function(ev)
+				callback = function(_)
 					local current_cursor_node = ts.get_node_at_cursor()
-          node_at_cursor:parent()
-					vim.print(ev)
+					local section = ts.get_line_section(current_cursor_node)
+					if section == "SUBTASKS" then
+						local fields = ts.get_fields_of_subtask(current_cursor_node)
+						local subtask_title = ts.get_title_of_subtask(current_cursor_node)
+						M.update_task(fields["task_id"], api_key, { name = subtask_title }, function(_)
+							vim.print("SubTask title updated: " .. subtask_title)
+						end)
+					elseif section == "DESCRIPTION" then
+            local task_description = ts.get_task_description(current_cursor_node)
+						local updated_task_id = vim.b.task_id
+						M.update_task(updated_task_id, api_key, { description = task_description }, function(_)
+							vim.print("Task description updated")
+						end)
+						-- updated[updated_task_id] = {description= ""}
+					end
 				end,
 			})
+
 		end),
 	}):start()
 end
-
--- M.create_subtask = function(task_id, api_key, fields, callback)
---   local url_info = utils.interpolate("{default_url}/task/{task_id}/subtask", { task_id = task_id, default_url = default_url })
---   curl.post(url_info, {
---     headers = {
---       Authorization = api_key,
---     },
---     body = fields,
---     callback = vim.schedule_wrap(function(out)
---       local output_task = vim.json.decode(out.body) or {}
---       callback(output_task)
---     end),
---   }):start()
--- end
 
 return M

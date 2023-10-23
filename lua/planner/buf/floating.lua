@@ -47,7 +47,7 @@ version: {version}
 {fields}
 @end
 ___
-* DESCRIPTION 
+* DESCRIPTION
 {description}
 ___
 * SUBTASKS
