@@ -2,9 +2,9 @@ local M = {}
 
 M.name_by_icon = {
 	clickup = {
-		["-"] = "upcoming",
-		["!"] = "in progress",
-		["="] = "planned",
+		["?"] = "upcoming",
+		["+"] = "in progress",
+		["-"] = "planned",
 		["x"] = "Closed",
 		["_"] = "abandoned",
 		[" "] = "Open",

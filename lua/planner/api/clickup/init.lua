@@ -1,5 +1,6 @@
 local M = {}
 local ts = require("planner.ts")
+local tl = require("planner.tl")
 local floating = require("planner.buf.floating")
 local utils = require("planner.utils")
 local status = require("planner.api.status")
@@ -7,11 +8,11 @@ local curl = require("custom_curl")
 
 local default_url = "https://api.clickup.com/api/v2"
 
---- Update task in ClickUp API
+--- Update task
 ---@param task_id string
 ---@param api_key string
 ---@param fields table
----@return job
+---@return any
 M.update_task = function(task_id, api_key, fields, callback)
 	local url_info = utils.interpolate("{default_url}/task/{task_id}", { task_id = task_id, default_url = default_url })
 	return curl.put(url_info, {
@@ -26,20 +27,26 @@ M.update_task = function(task_id, api_key, fields, callback)
 	}):start()
 end
 
+--- Parse get task response from ClickUp API
+---@param out table
+---@return table
 local task_parser = function(out)
 	local output_task = vim.json.decode(out.body) or {}
 
 	local title = output_task["name"] or ""
 	local description = output_task["text_content"] or ""
 	local subtasks = output_task["subtasks"] or {}
-	local author = output_task["creator"]["username"] or ""
+	-- local author = output_task["creator"]["username"] or ""
+	local author = "Me"
 	local categories = ""
 	local created = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["date_created"]) / 1000) or ""
 	local date_updated = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["date_updated"]) / 1000) or ""
 	local task_status = output_task["status"]["status"] or "Open"
 	local task_status_icon = status.icon_by_name["clickup"][task_status] or " "
-	local due_date = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["due_date"]) / 1000) or ""
-	local start_date = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["start_date"]) / 1000) or ""
+  local due_date = "2023-01-01 00:00:00"
+  local start_date = "2023-01-01 00:00:00"
+	-- local due_date = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["due_date"]) / 1000) or ""
+	-- local start_date = os.date("%Y-%m-%d %H:%M:%S", tonumber(output_task["start_date"]) / 1000) or ""
 	local fields = utils.interpolate(
 		[[
 due_date: {due_date}
@@ -73,10 +80,10 @@ start_date: {start_date}]],
 	}
 end
 
---- Get task from ClickUp API
+--- Get task and open it in buffer
 ---@param task_id string
 ---@param api_key string
----@return job
+---@return any
 M.get_task = function(task_id, api_key)
 	local url_info = utils.interpolate(
 		"{default_url}/task/{task_id}?include_subtasks=true",
@@ -99,7 +106,8 @@ M.get_task = function(task_id, api_key)
 				parsed.updated,
 				parsed.version,
 				parsed.fields,
-				parsed.task_status_icon
+				parsed.task_status_icon,
+				task_id
 			)
 			vim.b[bufnr].task_id = task_id
 			vim.b[bufnr].list_id = parsed.list_id
@@ -113,7 +121,6 @@ M.get_task = function(task_id, api_key)
 					end
 					local line_section = ts.get_line_section(current_cursor_node)
 					local section = line_section["title"]
-					vim.print(section)
 					local cursor_pos = vim.fn.getpos(".")
 					local curchar = vim.api.nvim_buf_get_text(
 						bufnr,
@@ -185,16 +192,23 @@ M.get_task = function(task_id, api_key)
 	}):start()
 end
 
+--- Create sub-task while in the SUBTASKS section
+---@param title string 
+---@param api_key string
+---@param callback function
+---@return any
 M.create_subtask = function(title, api_key, callback)
-  local current_cursor_node = ts.get_node_at_cursor()
-  local line_section = ts.get_line_section(current_cursor_node)
-  if line_section["title"] ~= "SUBTASKS" then
-    vim.print("Create subtask yet only works in the SUBTASKS section")
-    return
-  end
+	local current_cursor_node = ts.get_node_at_cursor()
+	local line_section = ts.get_line_section(current_cursor_node)
+	if line_section["title"] ~= "SUBTASKS" then
+		vim.print("Create subtask yet only works in the SUBTASKS section")
+		return {}
+	end
 
-	local url_info =
-		utils.interpolate("{default_url}/list/{list_id}/task?custom_task_ids=false", { list_id = vim.b.list_id, default_url = default_url })
+	local url_info = utils.interpolate(
+		"{default_url}/list/{list_id}/task?custom_task_ids=false",
+		{ list_id = vim.b.list_id, default_url = default_url }
+	)
 	return curl.post(url_info, {
 		headers = {
 			Authorization = api_key,
@@ -208,19 +222,46 @@ M.create_subtask = function(title, api_key, callback)
 				{
 					title = output_task["name"],
 					task_id = output_task["id"],
-          priority = "1",
+					priority = "1",
 					status_icon = status.icon_by_name["clickup"][output_task["status"]["status"]],
 				}
 			)
-      local section_end_row = line_section["node"]:end_()
-      vim.print(section_end_row)
-      vim.api.nvim_buf_set_lines(0, section_end_row, section_end_row+1, false, vim.split(new_subtask_text, "\n"))
-      vim.print("Subtask created: " .. output_task["name"])
+			local section_end_row = line_section["node"]:end_()
+			vim.api.nvim_buf_set_lines(
+				0,
+				section_end_row,
+				section_end_row + 1,
+				false,
+				vim.split(new_subtask_text, "\n")
+			)
+			vim.print("Subtask created: " .. output_task["name"])
 			callback(output_task)
-			-- vim.print(output_task)
 		end),
 	}):start()
-	-- https://api.clickup.com/api/v2/list/{list_id}/task?custom_task_ids=true&team_id=123
 end
+
+--- Get list of tasks and open telescope picker
+---@param list_id string
+---@param api_key string
+---@return any
+M.list_tasks = function(list_id, api_key)
+	local url_info = utils.interpolate(
+		"{default_url}/list/{list_id}/task?archived=false&include_closed=false",
+		{ list_id = list_id, default_url = default_url }
+	)
+	return curl.get(url_info, {
+		headers = {
+			Authorization = api_key,
+		},
+		callback = vim.schedule_wrap(function(out)
+			local output_tasks = vim.json.decode(out.body) or {}
+      tl.picker_tasks(output_tasks["tasks"], function(selected)
+        M.get_task(selected, api_key)
+      end)
+    end),
+	}):start()
+end
+
+
 
 return M

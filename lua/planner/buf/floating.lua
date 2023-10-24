@@ -1,7 +1,11 @@
 local M = {}
 local utils = require("planner.utils")
 
-M.open = function(text)
+--- Open buffer with specified title and texts
+---@param title string file name
+---@param text string contents of buffer
+---@return integer bufnr
+M.open = function(title, text)
 	local width = vim.api.nvim_get_option("columns")
 	local height = vim.api.nvim_get_option("lines")
 	local win_height = math.ceil(height * 0.9 - 4)
@@ -9,7 +13,7 @@ M.open = function(text)
 	local row = math.ceil((height - win_height) / 2 - 1)
 	local col = math.ceil((width - win_width) / 2)
 	local buf = vim.api.nvim_create_buf(true, true)
-  local save_name = vim.fn.tempname() .. ".norg"
+  local save_name = vim.fn.tempname() .. "_" .. title ..".norg"
 
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(text, "\n"))
 	vim.api.nvim_buf_set_option(buf, "filetype", "norg")
@@ -35,7 +39,7 @@ end
 ---@param title string
 ---@param description string
 ---@param subtasks string
-M.task = function(app, title, description, subtasks, author, categories, created, updated, version, fields, task_status_icon)
+M.task = function(app, title, description, subtasks, author, categories, created, updated, version, fields, task_status_icon, task_id)
 	local template = [[
 @document.meta
 title: {title}
@@ -68,7 +72,7 @@ ___
 		fields = fields,
     task_status_icon = task_status_icon,
 	})
-	local bufnr = M.open(task_render_text)
+	local bufnr = M.open(task_id, task_render_text)
   return bufnr
 end
 

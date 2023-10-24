@@ -48,15 +48,18 @@ version: 1.1.1
 - (x) create subtask with title, while cursor is in subtask section
   - (x) api req
   - (x) add to items list
-- ( ) keyboard shortcut for creating subtask
-  - ( ) get title from user input
+- (x) keyboard shortcut for creating subtask
+  - (x) get title from user input
    - *the minimum to use this plugin in work*
-- ( ) create task with title
-- ( ) delete subtask
-- ( ) delete task
+- (!) Create task with title, in specified list
 
 ** List rendering
-- ( ) using same format, show list information
+   - (x) buffer name with task_id
+   - (x) fetch tasks and show in Telescope
+   - (-) use this one as default todo planner
+   - ( ) fix empty fields: due, start, creator
+   - ( ) using same format, show list information
+   - ( ) Go to task by using keymap
 
 ** Rerfesh buffer
 - ( ) manually refresh buffer
@@ -64,10 +67,12 @@ version: 1.1.1
 
 ** Project rendering
 - ( ) using same format, show project information
-- ( ) Go to task keymap
 
 
-** Search task using Telescope
+* Search task using Telescope
+   - search task by title
+   - search task by content
+   - show subtasks in preview
 
 ** Advanced autocmd2
 - ( ) due date changed
@@ -77,6 +82,8 @@ version: 1.1.1
 ** Advanced CRUD by detecting changes in buffer
 - ( ) if subtask id not exist, create subtask
 - ( ) if subtask line deleted, delete subtask
+- ( ) delete subtask
+- ( ) delete task
 
 ** Visualize
  - ( ) show same task in different tabs
@@ -94,4 +101,11 @@ version: 1.1.1
 - ( ) consider using orgmode?
    - render in github
    - gtd features
+
+
+
+   - ( ) show message while loading
+   - ( ) list up currently in progress tasks or upcoming tasks
+   - ( ) cmp list for picking up icon
+   - ( ) custom settings for icon
 
