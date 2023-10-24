@@ -1,19 +1,34 @@
 @document.meta
-title: jinzhongjia/LspUI
+title: LspUI.nvim: A modern and useful UI plugin
 authors: Jungyong-lee
 categories: 
 created: 1693355855483
-updated: 1696318641517
+updated: 1698070877215
+due: 2023-10-10 00:00:00
+start: 2023-10-10 00:00:00
 version: 
 @end
-
+___
+* STATUS
+- ( )
 ___
 * DESCRIPTION
-- hhh
-- kkkk
+- https://github.com/jinzhongjia/LspUI.nvim
+- LspUI.nvim is a plugin that provides a modern and useful UI for Neovim's built-in LSP client.
 ___
 * SUBTASKS
-  ~ ( ) (A) Review the documentation of LspUI.nvim
-  ~~ task_id, PRIORITY
-  ~ ( ) (A) Identify key features of LspUI.nvim that can contribute to the Neovim UI
-  ~~ task_id, PRIORITY
+~ (x) (A) Review the documentation of LspUI.nvim
+~~ 860rmxy7p, 1
+~ (-) (A) Identify key features of LspUI.nvim that can contribute to the Neovim UI
+~~ 860rmxy7x, 1
+~ (-) (Auto) Plan integration of LspUI.nvim features into Neovim UI
+~~ 860rmxy83, 1
+~ ( ) (A) Execute the integration process
+~~ 860rmxy8a, 1
+~ ( ) (A) Test the integrated features
+~~ 860rmxy8j, 1
+~ (_) (A) Optimize based on test feedback
+~~ 860rmxy8u, 1
+~ ( ) (A) Document the changes made to the Neovim UI
+~~ 860rmxy94, 1
+  

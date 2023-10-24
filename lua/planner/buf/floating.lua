@@ -35,7 +35,7 @@ end
 ---@param title string
 ---@param description string
 ---@param subtasks string
-M.task = function(app, title, description, subtasks, author, categories, created, updated, version, fields)
+M.task = function(app, title, description, subtasks, author, categories, created, updated, version, fields, task_status_icon)
 	local template = [[
 @document.meta
 title: {title}
@@ -47,12 +47,14 @@ version: {version}
 {fields}
 @end
 ___
+* STATUS
+- ({task_status_icon})
+___
 * DESCRIPTION
 {description}
 ___
 * SUBTASKS
-{subtasks}
-  ]]
+{subtasks}]]
 
 	local task_render_text = utils.interpolate(template, {
 		title = title,
@@ -64,6 +66,7 @@ ___
 		updated = updated,
 		version = version,
 		fields = fields,
+    task_status_icon = task_status_icon,
 	})
 	local bufnr = M.open(task_render_text)
   return bufnr
