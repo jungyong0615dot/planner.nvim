@@ -9,7 +9,8 @@ version: 1.1.1
 @end
 
 * Create neovim plugin for todolist app
-** Read specified task and render in neovim buffer
+  - use nvim as diary
+* Read specified task and render in neovim buffer
    - (x) requirements
    - (x) nvim buffer template
    - (x) REST API requirements
@@ -25,7 +26,7 @@ version: 1.1.1
    - (x) parse fields and write into metadata
 
 ** When edit buffer, automatically update into app
-- ( ) on normal mode text edit - status change:
+- (x) on normal mode text edit - status change:
 -- (x) get current node in treesitter
 -- (x) fetch changed status
 -- (x) modify template for getting subtask id
@@ -33,30 +34,64 @@ version: 1.1.1
 -- (x) streamline modules
 -- (x) update app
 
-- ( ) on insert mode text edit:
--- ( ) if title changed, add to stack
--- ( ) if description changed, add to stack
--- ( ) if subtask title changed, add to stack
+- (x) on insert mode text edit:
+-- (x) if title changed, add to stack
+-- (x) if description changed, add to stack
+-- (x) if subtask title changed, add to stack
+- (_) when focus lost, update app from stack
 
-- ( ) when focus lost, update app from stack
-- ( ) when focus gain and task changed, update buffer
+* Advanced autocmd1
+- (x) modify template: add status, human readable dates
+- (x) task status change
 
-** Advanced autocmd
-- ( ) status change
-- ( ) if due date changed
-- ( ) if priority changed
-
-** List tasks from section
-
-** TASK/SUBTASK CRUD
-- ( ) create subtask with title
-- ( ) delete subtask
+* TASK/SUBTASK CRUD
+- (x) create subtask with title, while cursor is in subtask section
+  - (x) api req
+  - (x) add to items list
+- ( ) keyboard shortcut for creating subtask
+  - ( ) get title from user input
+   - *the minimum to use this plugin in work*
 - ( ) create task with title
+- ( ) delete subtask
 - ( ) delete task
+
+** List rendering
+- ( ) using same format, show list information
+
+** Rerfesh buffer
+- ( ) manually refresh buffer
+- ( ) when focus gain, update buffer
+
+** Project rendering
+- ( ) using same format, show project information
+- ( ) Go to task keymap
+
+
+** Search task using Telescope
+
+** Advanced autocmd2
+- ( ) due date changed
+ - ( ) add task priority ento template
+ - ( ) render subtasks priority
 
 ** Advanced CRUD by detecting changes in buffer
 - ( ) if subtask id not exist, create subtask
 - ( ) if subtask line deleted, delete subtask
 
 ** Visualize
-- ( ) priority color
+ - ( ) show same task in different tabs
+ - ( ) priority color
+
+** Expand platforms
+- ( ) Jira
+- ( ) Microsoft Todo
+- ( ) Todoist
+- ( ) Google Task
+
+** Exxpand features
+- ( ) Calendar rendering
+- ( ) History rendering
+- ( ) consider using orgmode?
+   - render in github
+   - gtd features
+
