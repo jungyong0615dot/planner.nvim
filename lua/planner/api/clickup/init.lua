@@ -263,5 +263,29 @@ M.list_tasks = function(list_id, api_key)
 end
 
 
+--- Create task and open
+---@param title string 
+---@param api_key string
+---@param callback function
+---@return any
+M.create_task = function(list_id, title, api_key, callback)
+  -- TODO: merge with create_subtask
+	local url_info = utils.interpolate(
+		"{default_url}/list/{list_id}/task?custom_task_ids=false",
+		{ list_id = list_id, default_url = default_url }
+	)
+	return curl.post(url_info, {
+		headers = {
+			Authorization = api_key,
+		},
+		body = { name = title },
+		callback = vim.schedule_wrap(function(out)
+			local output_task = vim.json.decode(out.body) or {}
+      M.get_task(output_task["id"], api_key)
+			vim.print("Task created: " .. output_task["name"])
+			callback(output_task)
+		end),
+	}):start()
+end
 
 return M

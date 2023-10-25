@@ -51,7 +51,7 @@ version: 1.1.1
 - (x) keyboard shortcut for creating subtask
   - (x) get title from user input
    - *the minimum to use this plugin in work*
-- (!) Create task with title, in specified list
+- (x) Create task with title, in specified list
 
 ** List rendering
    - (x) buffer name with task_id
@@ -92,12 +92,9 @@ version: 1.1.1
 ** Expand platforms
 - ( ) Jira
 - ( ) Microsoft Todo
-- ( ) Todoist
-- ( ) Google Task
 
 ** Exxpand features
 - ( ) Calendar rendering
-- ( ) History rendering
 - ( ) consider using orgmode?
    - render in github
    - gtd features
@@ -105,7 +102,8 @@ version: 1.1.1
 
 
    - ( ) show message while loading
+   - ( ) fold subtasks fields
+
    - ( ) list up currently in progress tasks or upcoming tasks
    - ( ) cmp list for picking up icon
-   - ( ) custom settings for icon
-
+   - ( ) get custom settings for icon
